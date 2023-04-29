@@ -28,6 +28,18 @@ jobs:
           docker builder prune -a
           docker buildx create --use --name mybuilder --node mybuilder
 
+      - name: Cache Buildx builder instance
+        uses: actions/cache@v2
+        with:
+          path: ~/.docker/cli-plugins/buildx
+          key: buildx-builder-${{ runner.os }}-${{ hashFiles('docker/builder.Dockerfile') }}
+
+      - name: Cache Docker image layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: buildx-image-${{ runner.os }}-${{ hashFiles('docker/Dockerfile') }}
+
       - name: Build and Cache Docker Image
         id: docker_build
         uses: docker/build-push-action@v2
