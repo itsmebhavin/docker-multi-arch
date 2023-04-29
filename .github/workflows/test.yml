@@ -27,6 +27,7 @@ jobs:
       
       - name: Build and push Docker image
         run: |
+          docker builder prune -a
           docker buildx create --name mybuilder
       # Use the Docker Buildx action with caching
       - name: Build and Cache Docker Image
