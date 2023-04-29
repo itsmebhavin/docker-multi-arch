@@ -25,6 +25,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_AUTH_USERNAME }}
           password: ${{ secrets.DOCKERHUB_AUTH_TOKEN }}
       
+      - name: Build and push Docker image
+        run: |
+          docker buildx create --name mybuilder
       # Use the Docker Buildx action with caching
       - name: Build and Cache Docker Image
         id: docker_build
@@ -36,17 +39,7 @@ jobs:
             docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-          builder: default
-        env:
-          DOCKER_BUILDKIT: 1
-          DOCKER_CLI_EXPERIMENTAL: enabled
-      - name: Push Docker Image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: |
-            docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }}
+          builder: mybuilder
         env:
           DOCKER_BUILDKIT: 1
           DOCKER_CLI_EXPERIMENTAL: enabled
