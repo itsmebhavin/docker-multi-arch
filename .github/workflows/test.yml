@@ -37,7 +37,7 @@ jobs:
           context: .
           push: true
           tags: |
-            docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }}
+            bapatel1/docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           builder: mybuilder
