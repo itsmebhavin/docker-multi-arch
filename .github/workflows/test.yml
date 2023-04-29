@@ -23,10 +23,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_AUTH_USERNAME }}
           password: ${{ secrets.DOCKERHUB_AUTH_TOKEN }}
       
-      - name: Create Cache and Builder for Buildx
-        run: |
-          docker builder prune -a
-          docker buildx create --use --name mybuilder --node mybuilder
+#       - name: Create Cache and Builder for Buildx
+#         run: |
+#           docker builder prune -a
+#           docker buildx create --use --name mybuilder --node mybuilder
 
       - name: Cache Buildx builder instance
         uses: actions/cache@v2
@@ -38,13 +38,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: buildx-image-${{ runner.os }}-${{ hashFiles('docker/Dockerfile') }}
+          key: buildx-image-${{ runner.os }}-${{ hashFiles('/Dockerfile') }}
 
       - name: Build and Cache Docker Image
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: .
+          file: ./Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
