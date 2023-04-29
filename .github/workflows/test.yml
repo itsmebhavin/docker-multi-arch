@@ -37,6 +37,7 @@ jobs:
         with:
           context: .
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: |
             bapatel1/docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }}
           cache-from: type=local,src=/tmp/.buildx-cache
