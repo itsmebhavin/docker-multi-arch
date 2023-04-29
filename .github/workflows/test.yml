@@ -27,11 +27,11 @@ jobs:
         run: |
            docker buildx create --use --name mybuilder --node mybuilder
 
-      - name: Cache Buildx builder instance
-        uses: actions/cache@v2
-        with:
-          path: ~/.docker/cli-plugins/buildx
-          key: buildx-builder-${{ runner.os }}-${{ hashFiles('docker/builder.Dockerfile') }}
+#       - name: Cache Buildx builder instance
+#         uses: actions/cache@v2
+#         with:
+#           path: ~/.docker/cli-plugins/buildx
+#           key: buildx-builder-${{ runner.os }}-${{ hashFiles('docker/builder.Dockerfile') }}
 
       - name: Cache Docker image layers
         uses: actions/cache@v2
