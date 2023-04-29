@@ -34,5 +34,5 @@ jobs:
           push: true
           tags: |
             bapatel1/docker-multi-arch:latest
-            bapatel1/docker-multi-arch:{{.Build.ID}}
+            bapatel1/docker-multi-arch:${{github.run_number}}
           platforms: linux/amd64,linux/arm64
