@@ -1,5 +1,5 @@
-name: 'Build and Push Multi-Arch Docker Image'
-# description: 'Using Quemu and Buildx'
+name: 'Build using Qemu and BuildX'
+# description: 'Using Qemu and Buildx'
 
 on:
   push:
