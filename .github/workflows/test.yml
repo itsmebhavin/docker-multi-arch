@@ -25,20 +25,29 @@ jobs:
           username: ${{ secrets.DOCKERHUB_AUTH_USERNAME }}
           password: ${{ secrets.DOCKERHUB_AUTH_TOKEN }}
       
-      
-      - name: Build and push image for current architecture
+      # Use the Docker Buildx action with caching
+      - name: Build and Cache Docker Image
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          builder: default
         env:
           DOCKER_BUILDKIT: 1
           DOCKER_CLI_EXPERIMENTAL: enabled
-        run: |
-          docker build -t docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }} .
-          docker push docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }}
-      
-      - name: Create manifest list
+      - name: Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }}
         env:
+          DOCKER_BUILDKIT: 1
           DOCKER_CLI_EXPERIMENTAL: enabled
-        run: |
-          docker manifest create my-image:latest \
-            docker-multi-arch:linux-amd64 \
-            docker-multi-arch:linux-arm64
-          docker manifest push docker-multi-arch:latest
+      
