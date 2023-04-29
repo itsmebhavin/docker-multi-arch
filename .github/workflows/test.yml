@@ -23,10 +23,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_AUTH_USERNAME }}
           password: ${{ secrets.DOCKERHUB_AUTH_TOKEN }}
       
-      - name: Build and push Docker image
+      - name: Create Cache and Builder for Buildx
         run: |
           docker builder prune -a
-          docker buildx create --name mybuilder
+          docker buildx create --use --name mybuilder --node mybuilder
 
       - name: Build and Cache Docker Image
         id: docker_build
