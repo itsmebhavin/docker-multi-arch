@@ -9,10 +9,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [linux]
-        arch: [amd64, arm64]
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,7 +27,7 @@ jobs:
         run: |
           docker builder prune -a
           docker buildx create --name mybuilder
-      # Use the Docker Buildx action with caching
+
       - name: Build and Cache Docker Image
         id: docker_build
         uses: docker/build-push-action@v2
@@ -39,7 +36,7 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            bapatel1/docker-multi-arch:${{ matrix.os }}-${{ matrix.arch }}
+            bapatel1/docker-multi-arch:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           builder: mybuilder
